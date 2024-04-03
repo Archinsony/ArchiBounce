@@ -1,113 +1,112 @@
-# Phaser Webpack Template
+# Phaser 3 + Vite.js Template
+> Make Phaser 3 games with modern frontend tooling.
 
-This is a Phaser 3 project template that uses webpack for bundling. It supports hot-reloading for quick development workflow and includes scripts to generate production-ready builds.
+![License](https://img.shields.io/badge/license-MIT-green)
 
-**[This Template is also available as a TypeScript version.](https://github.com/phaserjs/template-webpack-ts)**
+## Prerequisites
 
-### Versions
+You'll need [Node.js](https://nodejs.org/en/) and [npm](https://www.npmjs.com/) installed.
 
-This template has been updated for:
+It is highly recommended to use [Node Version Manager](https://github.com/nvm-sh/nvm) (nvm) to install Node.js and npm.
 
-- [Phaser 3.80.1](https://github.com/phaserjs/phaser)
-- [Webpack 5.90.3](https://github.com/webpack/webpack)
+For Windows users there is [Node Version Manager for Windows](https://github.com/coreybutler/nvm-windows).
 
-![screenshot](screenshot.png)
+Install Node.js and `npm` with `nvm`:
 
-## Requirements
+```bash
+nvm install node
 
-[Node.js](https://nodejs.org) is required to install dependencies and run scripts via `npm`.
-
-## Available Commands
-
-| Command | Description |
-|---------|-------------|
-| `npm install` | Install project dependencies |
-| `npm run dev` | Launch a development web server |
-| `npm run build` | Create a production build in the `dist` folder |
-
-## Writing Code
-
-After cloning the repo, run `npm install` from your project directory. Then, you can start the local development server by running `npm run dev`.
-
-The local development server runs on `http://localhost:8080` by default. Please see the webpack documentation if you wish to change this, or add SSL support.
-
-Once the server is running you can edit any of the files in the `src` folder. Webpack will automatically recompile your code and then reload the browser.
-
-## Template Project Structure
-
-We have provided a default project structure to get you started. This is as follows:
-
-- `index.html` - A basic HTML page to contain the game.
-- `src` - Contains the game source code.
-- `src/main.js` - The main entry point. This contains the game configuration and starts the game.
-- `src/scenes/` - The Phaser Scenes are in this folder.
-- `public/style.css` - Some simple CSS rules to help with page layout.
-- `public/assets` - Contains the static assets used by the game.
-
-## Handling Assets
-
-Webpack supports loading assets via JavaScript module `import` statements.
-
-This template provides support for both embedding assets and also loading them from a static folder. To embed an asset, you can import it at the top of the JavaScript file you are using it in:
-
-```js
-import logoImg from './assets/logo.png'
+nvm use node
 ```
 
-To load static files such as audio files, videos, etc place them into the `public/assets` folder. Then you can use this path in the Loader calls within Phaser:
+Replace 'node' with 'latest' for `nvm-windows`.
+
+## Getting Started
+
+You can clone this repository or use [degit](https://github.com/Rich-Harris/degit) to scaffold the project like this:
+
+```bash
+npx degit https://github.com/ourcade/phaser3-vite-template my-folder-name
+cd my-folder-name
+
+npm install
+```
+
+Start development server:
+
+```
+npm run start
+```
+
+To create a production build:
+
+```
+npm run build
+```
+
+Production files will be placed in the `dist` folder. Then upload those files to a web server. 🎉
+
+## Project Structure
+
+```
+    .
+    ├── dist
+    ├── node_modules
+    ├── public
+    ├── src
+    │   ├── HelloWorldScene.js
+    │   ├── main.js
+	├── index.html
+    ├── package.json
+```
+
+JavaScript files are intended for the `src` folder. `main.js` is the entry point referenced by `index.html`.
+
+Other than that there is no opinion on how you should structure your project.
+
+There is an example `HelloWorldScene.js` file that can be placed inside a `scenes` folder to organize by type or elsewhere to organize by function. For example, you can keep all files specific to the HelloWorld scene in a `hello-world` folder.
+
+It is all up to you!
+
+## Static Assets
+
+Any static assets like images or audio files should be placed in the `public` folder. It'll then be served from the root. For example: http://localhost:8000/images/my-image.png
+
+Example `public` structure:
+
+```
+    public
+    ├── images
+    │   ├── my-image.png
+    ├── music
+    │   ├── ...
+    ├── sfx
+    │   ├── ...
+```
+
+They can then be loaded by Phaser with `this.image.load('my-image', 'images/my-image.png')`.
+
+# ESLint
+
+This template uses a basic `eslint` set up for code linting to help you find and fix common problems in your JavaScript code.
+
+It does not aim to be opinionated.
+
+[See here for rules to turn on or off](https://eslint.org/docs/rules/).
+
+## Dev Server Port
+
+You can change the dev server's port number by modifying the `vite.config.js` file. Look for the `server` section:
 
 ```js
-preload ()
 {
-    //  This is an example of an imported bundled image.
-    //  Remember to import it at the top of this file
-    this.load.image('logo', logoImg);
-
-    //  This is an example of loading a static image
-    //  from the public/assets folder:
-    this.load.image('background', 'assets/bg.png');
+	// ...
+	server: { host: '0.0.0.0', port: 8000 },
 }
 ```
 
-When you issue the `npm run build` command, all static assets are automatically copied to the `dist/assets` folder.
+Change 8000 to whatever you want.
 
-## Deploying to Production
+## License
 
-After you run the `npm run build` command, your code will be built into a single bundle and saved to the `dist` folder, along with any other assets your project imported, or stored in the public assets folder.
-
-In order to deploy your game, you will need to upload *all* of the contents of the `dist` folder to a public facing web server.
-
-## Customizing the Template
-
-### Babel
-
-You can write modern ES6+ JavaScript and Babel will transpile it to a version of JavaScript that you want your project to support. The targeted browsers are set in the `.babelrc` file and the default currently targets all browsers with total usage over "0.25%" but excludes IE11 and Opera Mini.
-
- ```
-"browsers": [
-  ">0.25%",
-  "not ie 11",
-  "not op_mini all"
-]
- ```
-
-### Webpack
-
-If you want to customize your build, such as adding a new webpack loader or plugin (i.e. for loading CSS or fonts), you can modify the `webpack/config.js` file for cross-project changes, or you can modify and/or create new configuration files and target them in specific npm tasks inside of `package.json`. Please see the [Webpack documentation](https://webpack.js.org/) for more information.
-
-## Join the Phaser Community!
-
-We love to see what developers like you create with Phaser! It really motivates us to keep improving. So please join our community and show-off your work 😄
-
-**Visit:** The [Phaser website](https://phaser.io) and follow on [Phaser Twitter](https://twitter.com/phaser_)<br />
-**Play:** Some of the amazing games [#madewithphaser](https://twitter.com/search?q=%23madewithphaser&src=typed_query&f=live)<br />
-**Learn:** [API Docs](https://newdocs.phaser.io), [Support Forum](https://phaser.discourse.group/) and [StackOverflow](https://stackoverflow.com/questions/tagged/phaser-framework)<br />
-**Discord:** Join us on [Discord](https://discord.gg/phaser)<br />
-**Code:** 2000+ [Examples](https://labs.phaser.io)<br />
-**Read:** The [Phaser World](https://phaser.io/community/newsletter) Newsletter<br />
-
-Created by [Phaser Studio](mailto:support@phaser.io). Powered by coffee, anime, pixels and love.
-
-The Phaser logo and characters are &copy; 2011 - 2024 Phaser Studio Inc.
-
-All rights reserved.
+[MIT License](https://github.com/ourcade/phaser3-vite-template/blob/master/LICENSE)
